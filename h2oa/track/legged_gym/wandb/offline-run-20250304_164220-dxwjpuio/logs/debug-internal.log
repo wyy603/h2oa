@@ -1,0 +1,14 @@
+{"time":"2025-03-04T16:42:20.772636689+08:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/home/wyy603/Projects/h2oa/h2oa/track/legged_gym/wandb/offline-run-20250304_164220-dxwjpuio/logs/debug-core.log"}
+{"time":"2025-03-04T16:42:20.876527714+08:00","level":"INFO","msg":"created new stream","id":"dxwjpuio"}
+{"time":"2025-03-04T16:42:20.876583342+08:00","level":"INFO","msg":"stream: started","id":"dxwjpuio"}
+{"time":"2025-03-04T16:42:20.876629277+08:00","level":"INFO","msg":"writer: Do: started","stream_id":"dxwjpuio"}
+{"time":"2025-03-04T16:42:20.876630699+08:00","level":"INFO","msg":"handler: started","stream_id":"dxwjpuio"}
+{"time":"2025-03-04T16:42:20.876683862+08:00","level":"INFO","msg":"sender: started","stream_id":"dxwjpuio"}
+{"time":"2025-03-04T16:42:20.884167125+08:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-04T16:42:24.289432766+08:00","level":"INFO","msg":"stream: closing","id":"dxwjpuio"}
+{"time":"2025-03-04T16:42:24.289445629+08:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-04T16:42:24.289837391+08:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-04T16:42:24.289874014+08:00","level":"INFO","msg":"handler: closed","stream_id":"dxwjpuio"}
+{"time":"2025-03-04T16:42:24.289879907+08:00","level":"INFO","msg":"writer: Close: closed","stream_id":"dxwjpuio"}
+{"time":"2025-03-04T16:42:24.289894941+08:00","level":"INFO","msg":"sender: closed","stream_id":"dxwjpuio"}
+{"time":"2025-03-04T16:42:24.289910344+08:00","level":"INFO","msg":"stream: closed","id":"dxwjpuio"}

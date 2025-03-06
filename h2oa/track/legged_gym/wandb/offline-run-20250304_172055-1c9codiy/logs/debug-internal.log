@@ -1,0 +1,14 @@
+{"time":"2025-03-04T17:20:55.940050185+08:00","level":"INFO","msg":"stream: starting","core version":"0.19.7","symlink path":"/home/wyy603/Projects/h2oa/h2oa/track/legged_gym/wandb/offline-run-20250304_172055-1c9codiy/logs/debug-core.log"}
+{"time":"2025-03-04T17:20:56.04242377+08:00","level":"INFO","msg":"created new stream","id":"1c9codiy"}
+{"time":"2025-03-04T17:20:56.042460888+08:00","level":"INFO","msg":"stream: started","id":"1c9codiy"}
+{"time":"2025-03-04T17:20:56.042496259+08:00","level":"INFO","msg":"writer: Do: started","stream_id":"1c9codiy"}
+{"time":"2025-03-04T17:20:56.042514989+08:00","level":"INFO","msg":"sender: started","stream_id":"1c9codiy"}
+{"time":"2025-03-04T17:20:56.042521105+08:00","level":"INFO","msg":"handler: started","stream_id":"1c9codiy"}
+{"time":"2025-03-04T17:20:56.047855577+08:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-04T17:20:59.515095679+08:00","level":"INFO","msg":"stream: closing","id":"1c9codiy"}
+{"time":"2025-03-04T17:20:59.515114479+08:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-04T17:20:59.515505754+08:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-04T17:20:59.515543083+08:00","level":"INFO","msg":"handler: closed","stream_id":"1c9codiy"}
+{"time":"2025-03-04T17:20:59.515547899+08:00","level":"INFO","msg":"writer: Close: closed","stream_id":"1c9codiy"}
+{"time":"2025-03-04T17:20:59.515555548+08:00","level":"INFO","msg":"sender: closed","stream_id":"1c9codiy"}
+{"time":"2025-03-04T17:20:59.515607545+08:00","level":"INFO","msg":"stream: closed","id":"1c9codiy"}

@@ -1,0 +1,1 @@
+WANDB_DIR=../../ CUDA_VISIBLE_DEVICES=0 python train.py --run_name 1110_Truemc_8204dn --sim_device cuda:0 --rl_device cuda:0 --task h1_mc --headless

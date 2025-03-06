@@ -1,0 +1,19 @@
+# vscode
+.vscode
+.ssh
+
+# python
+**/__pycache__/
+
+# Distribution / packaging
+*.egg-info/
+
+# dataset
+h2oa/dataset/*
+
+# logs
+**/logs/
+**/wandb/
+
+# files related to path
+h2oa/utils/__init__.py

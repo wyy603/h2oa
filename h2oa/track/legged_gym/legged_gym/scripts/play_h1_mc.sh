@@ -1,0 +1,1 @@
+WANDB_DIR=../../ CUDA_VISIBLE_DEVICES=0 python play.py --load_run 1213_pop_16430 --sim_device cpu --rl_device cuda:0 --task h1_mc

@@ -1,0 +1,450 @@
+from legged_gym.envs.base.base_config import BaseConfig
+
+class H1RoughCfg( BaseConfig ):
+    class human:
+        delay = 0.0 # delay in seconds
+        freq = 30
+        resample_on_env_reset = True
+        filename = '/cephfs_yili/shared/xuehan/H1_RL/dn_8198_15.pkl'
+        # filename = '/cephfs_yili/shared/xuehan/H1_RL/rcp_8204_h2o.pkl'
+        # filename = '/cephfs_yili/shared/xuehan/H1_RL/retarget_13911_amass_train_13912.pkl'
+        # filename = '/cephfs_yili/shared/xuehan/H1_RL/tracked_2165_0.5_0831_11112retar_tarinit_retarget_13911_amass_train_13912.pkl'
+        # filename = '/home/ubuntu/data/PHC/train_5000.pkl'
+        # filename = '/home/ubuntu/data/PHC/fail_75.pkl'
+        load_global = True
+        multi_motion = True
+        
+    class env:
+        num_envs = 8192
+        num_dofs = 19
+        num_bodies = 22
+        num_privileged_obs = None # if not None a priviledge_obs_buf will be returned by step() (critic obs for assymetric training). None is returned otherwise 
+        num_actions = 19
+        env_spacing = 3.  # not used with heightfields/trimeshes 
+        send_timeouts = True # send time out information to the algorithm
+        episode_length_s = 20 # episode length in seconds
+        policy_name = "ActorCritic"
+
+        action_delay = -1  # -1 for no delay
+        obs_context_len = 8
+        target_init = True
+        target_heading_init = True
+        z_norm=True
+        curriculum_lowerband = 100
+        curriculum_upperband = 200
+        extend_frames = 10
+        class obs:
+            ############### state ################
+            dof_pos = False # dof pos
+            dof_vel = False # dof vel
+
+            body_pos = True # body pos in heading frame
+            body_ori = True # body ori in heading frame
+            body_vel = True # body vel in heading frame
+            body_ang_vel = True # body ang_vel in heading frame
+
+            root_pos = False # global root pos 
+            root_ori = False # global root ori
+            root_vel = False # global root vel
+            root_ang_vel = False # global root ang_vel
+            root_high = True
+
+            last_action = True # last policy action
+
+            base_orn_rp = False # global base orn_rp
+            base_lin_vel = True # base_lin_vel in heading frame
+            base_ang_vel = True # base_ang_vel in heading frame
+            projected_gravity = True # gravity
+
+            commands = False # commands
+
+            ############### target ################
+            target_dof_pos = False # target dof pos
+            target_dof_vel = False # target dof vel
+
+            target_body_pos = False # target body pos in target heading frame
+            target_body_ori = False # target body ori in target heading frame
+            target_body_vel = False # target body vel in target heading frame TODO
+            target_body_ang_vel = False # target body ang_vel in target heading frame, TODO
+
+            target_global_pos = True # target body pos in self heading frame
+            target_global_ori = True # target body ori in self heading frame
+            target_global_vel = False # target body vel in self heading frame
+            target_global_ang_vel = False # target body ang_vel in self heading frame,
+
+            diff_local_pos = False # target_body_pos - body_pos
+            diff_local_ori = False # target_body_ori - body_ori
+            diff_local_vel = False # target_body_vel - body_vel
+            diff_local_ang_vel = False # target_body_ang_vel - body_ang_vel
+
+            diff_global_pos = True # target_global_pos - body_pos
+            diff_global_ori = True # target_global_ori - body_ori
+            diff_global_vel = False # target_global_vel - body_vel
+            diff_global_ang_vel = False # target_global_ang_vel - body_ang_vel
+
+            target_root_pos = False # global target root pos, not support for now
+            target_root_ori = False # global target root ori, not support for now
+            target_root_vel = True # global target root vel, not support for now
+            target_root_ang_vel = True # global target root ang_vel, not support for now
+
+
+    class terrain:
+        mesh_type = "plane" # none, plane, heightfield or trimesh
+        horizontal_scale = 0.1 # [m]
+        vertical_scale = 0.005 # [m]
+        border_size = 25 # [m]
+        curriculum = False
+        static_friction = 1.0
+        dynamic_friction = 1.0
+        restitution = 0.
+        # rough terrain only:
+        measure_heights = False
+        measured_points_x = [-0.8, -0.7, -0.6, -0.5, -0.4, -0.3, -0.2, -0.1, 0., 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8] # 1mx1.6m rectangle (without center line)
+        measured_points_y = [-0.5, -0.4, -0.3, -0.2, -0.1, 0., 0.1, 0.2, 0.3, 0.4, 0.5]
+        selected = True # select a unique terrain type and pass all arguments
+        terrain_kwargs = None # Dict of arguments for selected terrain
+        max_init_terrain_level = 5 # starting curriculum state
+        terrain_length = 8.
+        terrain_width = 8.
+        num_rows= 10 # number of terrain rows (levels)
+        num_cols = 10 # number of terrain cols (types)
+        # terrain types: [smooth slope, rough slope, stairs up, stairs down, discrete]
+        terrain_proportions = [0.1, 0.1, 0.35, 0.25, 0.2]
+        # trimesh only:
+        slope_treshold = 0.75 # slopes above this threshold will be corrected to vertical surfaces
+
+    class commands:
+        curriculum = False
+        max_curriculum = 1.
+        num_commands = 4 # default: lin_vel_x, lin_vel_y, ang_vel_yaw, heading (in heading mode ang_vel_yaw is recomputed from heading error)
+        resampling_time = 10. # time before command are changed[s]
+        heading_command = True # if true: compute ang vel command from heading error
+        class ranges:
+            lin_vel_x = [0.9, 0.9] # min max [m/s]
+            lin_vel_y = [0, 0]   # min max [m/s]
+            ang_vel_yaw = [0, 0]    # min max [rad/s]
+            heading = [0, 0]
+
+    class init_state:
+        pos = [0.0, 0.0, 1.05] # x,y,z [m]
+        rot = [0.0, 0.0, 0.0, 1.0] # x,y,z,w [quat]
+        lin_vel = [0.0, 0.0, 0.0]  # x,y,z [m/s]
+        ang_vel = [0.0, 0.0, 0.0]  # x,y,z [rad/s]
+        default_joint_angles = { # = target angles [rad] when action = 0.0
+            'left_hip_yaw_joint': 0.0,
+            'left_hip_roll_joint': 0.0,
+            'left_hip_pitch_joint': -0.349,
+            'left_knee_joint': 0.698,
+            'left_ankle_joint': -0.349,
+            'right_hip_yaw_joint': 0.0,
+            'right_hip_roll_joint': 0.0,
+            'right_hip_pitch_joint': -0.349,
+            'right_knee_joint': 0.698,
+            'right_ankle_joint': -0.349,
+            'torso_joint': 0.0,
+            'left_shoulder_pitch_joint': 0.0,
+            'left_shoulder_roll_joint': 0.0,
+            'left_shoulder_yaw_joint': 0.0,
+            'left_elbow_joint': 0.0,
+            'right_shoulder_pitch_joint': 0.0,
+            'right_shoulder_roll_joint': 0.0,
+            'right_shoulder_yaw_joint': 0.0,
+            'right_elbow_joint': 0.0,
+        }
+        random_episode_lenth = -100
+
+    class control:
+        control_type = 'P'
+        # PD Drive parameters:
+        stiffness = {'joint': 100.}  # [N*m/rad]
+        damping = {'joint': 5.}     # [N*m*s/rad]
+        action_scale = 1.0
+        clip_actions = True
+        # decimation: Number of control action updates @ sim DT per policy DT
+        decimation = 4
+        
+    class asset:
+        file = '{LEGGED_GYM_ROOT_DIR}/resources/robots/h1/urdf/h1_add_hand_link.urdf'
+        name = "h1"
+        foot_name = 'ankle'
+        penalize_contacts_on = []
+        terminate_after_contacts_on = ['pelvis', 'hip', 'shoulder', 'elbow', 'knee']
+        disable_gravity = False
+        collapse_fixed_joints = True # merge bodies connected by fixed joints. Specific fixed joints can be kept by adding " <... dont_collapse="true">
+        fix_base_link = False # fixe the base of the robot
+        default_dof_drive_mode = 3 # see GymDofDriveModeFlags (0 is none, 1 is pos tgt, 2 is vel tgt, 3 effort)
+        self_collisions = 0 # 1 to disable, 0 to enable...bitwise filter
+        replace_cylinder_with_capsule = True # replace collision cylinders with capsules, leads to faster/more stable simulation
+        flip_visual_attachments = False
+
+        density = 0.001
+        angular_damping = 0.
+        linear_damping = 0.
+        max_angular_velocity = 1000.
+        max_linear_velocity = 1000.
+        armature = 0.
+        thickness = 0.01
+
+    class domain_rand:
+        randomize_friction = False
+        friction_range = [0.0, 2.0]
+
+        randomize_base_mass = False  #
+        added_mass_range = [-1., 5.]
+
+        randomize_base_com = False
+        added_com_range_x = [-0.1, 0.1]
+        added_com_range_y = [-0.15, 0.15]
+        added_com_range_z = [-0.2, 0.2]
+
+        randomize_motor = False
+        leg_motor_strength_range = [0.8, 1.2]
+        arm_motor_strength_range = [0.8, 1.2]
+
+        randomize_proprio_latency = False
+        proprio_latency_range = [0.005, 0.045]
+
+        push_robots = False
+        push_interval_s = 10.
+        max_push_vel_xy = 1.
+
+        randomize_gripper_mass = False
+        gripper_added_mass_range = [0, 0.1]
+
+        randomize_Kp_factor = False
+        Kp_factor_range = [0.8, 1.3]
+
+        randomize_Kd_factor = False
+        Kd_factor_range = [0.5, 1.5]
+
+        reset_arm_dof_when_resampling_command = False
+        reset_arm_dof_when_push_robots = False
+
+    class rewards:
+        class scales:
+            ############ penalty ############
+            termination = -0.0
+            dof_pos_limits = -0.0
+
+            ########### regularization ###########
+            torques = -0.0
+            dof_vel = -0
+            dof_acc = -0e-6
+            weighted_torques = -0.e-7
+            feet_air_time = 0.
+            feet_stumble = -0.0 
+            action_rate = -0e-4
+            stand_still = -0.
+            energy = -0
+            feet_slipping = -0
+            energy_humanplus = -0
+            feet_slipping_humanplus = -0
+            power_phc = -0e-5
+
+
+            ########## task reward #########
+            tracking_lin_vel = 0.
+            tracking_ang_vel = 0.
+            target_jt = 0
+            target_jt_pos = 0
+            target_jt_vel = 0
+            root_lin_vel = 0.1
+            root_ang_vel = 0.1
+            root_ori = 0.
+            root_pos = 0.
+
+            global_pos_phc = 1
+            global_ori_phc = 0.5
+            global_vel_phc = 0.
+            global_ang_vel_phc = 0.
+            local_pos_phc = 0.
+            local_ori_phc = 0.
+            local_vel_phc = 0.
+            local_ang_vel_phc = 0.
+
+            ########## others ##########
+            lin_vel_z = -0
+            ang_vel_xy = -0
+            orientation = -0.
+            base_height = -0. 
+            collision = -0.
+            
+            jt_base_vel_xy_humanplus = 0
+            jt_base_ang_vel_yaw_humanplus = 0
+            jt_dof_pos_humanplus = 0
+            jt_base_rp_humanplus = -0
+            jt_foot_contact_humanplus = 0
+            alive_humanplus = 0.
+
+
+        only_positive_rewards = False # if true negative total rewards are clipped at zero (avoids early termination problems)
+        tracking_sigma = 10 # tracking reward = exp(-error^2/sigma)
+        soft_dof_pos_limit = 1. # percentage of urdf limits, values above this limit are penalized
+        soft_dof_vel_limit = 1.
+        soft_torque_limit = 1.
+        base_height_target = 1.
+        max_contact_force = 100. # forces above this value are penalized
+        use_privileged_rew = True
+        use_curriculum = True
+
+    class termination:
+        r_threshold = 0.5
+        p_threshold = 0.5
+        z_threshold = 0.5
+        contact_threshold = 1
+        enable_early_termination = True
+        termination_distance = 0.5
+
+    class normalization:
+        class obs_scales:
+            # lin_vel = 1.0
+            dof_pos = 1.0
+            dof_vel = 0.05
+
+            body_pos = 1.0
+            body_ori = 1.0
+            body_vel = 0.05
+            body_ang_vel = 0.05
+
+            root_pos = 1.0
+            root_ori = 1.0
+            root_vel = 0.05
+            root_ang_vel = 0.05
+
+            last_action = 1.0
+
+            target_dof_pos = 1.0
+            target_dof_vel = 0.05
+
+            target_body_pos = 1.0
+            target_body_ori = 1.0
+            target_body_vel = 0.05
+            target_body_ang_vel = 0.05
+
+            target_global_pos = 1.0
+            target_global_ori = 1.0
+            target_global_vel = 0.05
+            target_global_ang_vel = 0.05
+
+            diff_local_pos = 1.0
+            diff_local_ori = 1.0
+            diff_local_vel = 0.05
+            diff_local_ang_vel = 0.05
+
+            diff_global_pos = 1.0
+            diff_global_ori = 1.0
+            diff_global_vel = 0.05
+            diff_global_ang_vel = 0.05
+
+            target_root_pos = 1.0
+            target_root_ori = 1.0
+            target_root_vel = 0.05
+            target_root_ang_vel = 0.05
+
+            base_lin_vel = 0.25
+            base_ang_vel = 0.25
+            base_orn_rp = 1.0
+            projected_gravity = 1
+
+            height_measurements = 5.0
+
+        commands_scale = [1., 1., 1., 1.]
+        clip_observations = 100.
+        clip_actions = 100.
+
+    class noise:
+        add_noise = False
+        noise_level = 1.0 # scales other values
+        class noise_scales:
+            dof_pos = 0.01
+            dof_vel = 1.5
+            # lin_vel = 0.1
+            orn = 0.05
+            ang_vel = 0.2
+            # gravity = 0.05
+            height_measurements = 0.1
+
+    # viewer camera:
+    class viewer:
+        ref_env = 0
+        pos = [10, 0, 6]  # [m]
+        lookat = [11., 5, 3.]  # [m]
+
+    class sim:
+        dt =  0.005
+        substeps = 2
+        gravity = [0., 0., -9.81]  # [m/s^2]
+        up_axis = 1  # 0 is y, 1 is z
+
+        class physx:
+            num_threads = 10
+            solver_type = 1  # 0: pgs, 1: tgs
+            num_position_iterations = 8
+            num_velocity_iterations = 0
+            contact_offset = 0.01  # [m]
+            rest_offset = 0.0   # [m]
+            bounce_threshold_velocity = 0.5 #0.5 [m/s]
+            max_depenetration_velocity = 1.0
+            max_gpu_contact_pairs = 2**23 #2**24 -> needed for 8000 envs and more
+            default_buffer_size_multiplier = 5
+            contact_collection = 2 # 0: never, 1: last sub-step, 2: all sub-steps (default=2)
+
+
+class H1RoughCfgPPO(BaseConfig):
+    seed = 1
+    runner_class_name = 'OnPolicyRunner'
+    class policy:
+        init_noise_std = 1.0
+        # actor_hidden_dims = [512, 256, 128]
+        # critic_hidden_dims = [512, 256, 128]
+        # activation = 'elu' # can be elu, relu, selu, crelu, lrelu, tanh, sigmoid
+        # only for 'ActorCriticRecurrent':
+        # rnn_type = 'lstm'
+        # rnn_hidden_size = 512
+        # rnn_num_layers = 1
+        
+    class algorithm:
+        # training params
+        value_loss_coef = 1.0
+        use_clipped_value_loss = True
+        clip_param = 0.2
+        entropy_coef =  1e-4 # IMPORTANT
+        num_learning_epochs = 5
+        num_mini_batches = 4 # mini batch size = num_envs*nsteps / nminibatches
+        learning_rate = 5e-4
+        schedule = 'fixed' # could be adaptive, fixed
+        gamma = 0.99
+        lam = 0.95
+        desired_kl = 0.01
+        max_grad_norm = 1.
+
+    class runner:
+        # policy_class_name = 'ActorCriticTransformer'
+        # algorithm_class_name = 'PPO'
+        # num_steps_per_env = 32 # per iteration
+        # max_iterations = 15000 # number of policy updates
+
+        # # logging
+        # save_interval = 200 # check for potential saves every this many iterations
+        # experiment_name = 'rough_h1'
+        # run_name = None
+        # # load and resume
+        # resume = False
+        # load_run = -1 # -1 = last run
+        # checkpoint = -1 # -1 = last saved model
+        # resume_path = None # updated from load_run and chkpt
+        max_iterations = 20000  # number of policy updates
+
+        policy_class_name = 'ActorCritic'
+        algorithm_class_name = 'PPO'
+        num_steps_per_env = 24  # per iteration
+
+        # logging
+        save_interval = 1000  # check for potential saves every this many iterations
+        experiment_name = 'rough_h1'
+        run_name = None
+        # load and resume
+        resume = False
+        load_run = -1  # -1 = last run
+        checkpoint = -1  # -1 = last saved model
+        resume_path = None  # updated from load_run and chkpt
