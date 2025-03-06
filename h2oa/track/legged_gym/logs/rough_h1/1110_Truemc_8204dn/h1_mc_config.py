@@ -7,7 +7,7 @@ class H1RoughCfg( BaseConfig ):
         freq = 30
         resample_on_env_reset = True
         # filename = '/cephfs_yili/shared/xuehan/H1_RL/pop_*'
-        filename = str(DATASET / f'H1_RT/dn_100_test.pkl')
+        filename = str(DATASET / f'H1_RT/dn_16418_L_rcp_2_o8_s2885000_rcp_16429_train.pkl')
         # filename = '/cephfs_yili/shared/xuehan/H1_RL/dn_8198_h2o.pkl'
         # filename = '/cephfs_yili/shared/xuehan/H1_RL/rcp_8204_h2o.pkl'
         # filename = '/cephfs_yili/shared/xuehan/H1_RL/dn_1949_c25_o8_s819000_rt_13911.pkl'
